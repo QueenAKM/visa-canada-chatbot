@@ -3,8 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Visa Canada Cadeau</title>
+    <title>Visa Canada Cadeau - Votre assistant immigration</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .flag-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: #5a67d8;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .cta-section h2 {
+            color: #5a67d8;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .cta-section p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .chatbot-notice {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .chatbot-notice p {
+            margin: 0;
+            color: #333;
+        }
+
+        .chatbot-notice strong {
+            color: #ff6b6b;
+        }
+
+        /* Chatbot Styles */
         #visa-chatbot-widget {
             position: fixed;
             bottom: 20px;
@@ -214,7 +360,16 @@
             30% { transform: translateY(-6px); opacity: 1; }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .header p {
+                font-size: 1.1rem;
+            }
+            .features {
+                grid-template-columns: 1fr;
+            }
             #visa-chatbot-container {
                 width: 300px;
                 height: 450px;
@@ -227,6 +382,65 @@
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <span class="flag-emoji">🇨🇦</span>
+            <h1>Visa Canada Cadeau</h1>
+            <p>Votre partenaire de confiance pour réussir votre immigration au Canada. Économisez des milliers d'euros avec nos guides experts.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <span class="feature-icon">🎓</span>
+                <h3>Pack Étudiant</h3>
+                <p>Guide complet pour étudier au Canada (Québec et autres provinces). Bourses, visa étudiant, démarches simplifiées.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💼</span>
+                <h3>Permis de Travail</h3>
+                <p>PVT, permis de travail, Entrée Express. Tous les chemins pour travailler légalement au Canada.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🏠</span>
+                <h3>Résidence Permanente</h3>
+                <p>Guides pour obtenir votre résidence permanente par différents programmes d'immigration.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">👨‍👩‍👧</span>
+                <h3>Immigration Familiale</h3>
+                <p>Parrainage conjoint, réunification familiale, démarches pour toute la famille.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">💰</span>
+                <h3>Économies Garanties</h3>
+                <p>Évitez les frais d'agence de 3000-5000€. Nos guides vous font économiser des milliers d'euros.</p>
+            </div>
+
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <h3>Expertise Vérifiée</h3>
+                <p>Conseils d'experts ayant réussi leur immigration. Évitez les erreurs coûteuses.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Prêt à réaliser votre rêve canadien ?</h2>
+            <p>Découvrez nos guides experts et économisez des milliers d'euros sur votre projet d'immigration.</p>
+            <a href="https://visacanadacadeau.com" class="cta-button" target="_blank">
+                Voir nos guides 🚀
+            </a>
+        </div>
+
+        <div class="chatbot-notice">
+            <p><strong>💬 Besoin d'aide ?</strong> Utilisez notre assistant virtuel en bas à droite pour des conseils personnalisés !</p>
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
     <div id="visa-chatbot-widget">
         <button id="visa-chatbot-button">
             🇨🇦
