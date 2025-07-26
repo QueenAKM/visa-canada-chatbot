@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Visa Canada Cadeau</title>
+    <style>
+        #visa-chatbot-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #visa-chatbot-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+            font-size: 24px;
+            position: relative;
+        }
+
+        #visa-chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.6);
+        }
+
+        #visa-chatbot-button.active {
+            background: #666;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
+
+        #visa-chatbot-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #visa-chatbot-container.show {
+            display: flex;
+        }
+
+        .widget-header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .widget-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .widget-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .widget-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .widget-message {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .widget-message.bot {
+            justify-content: flex-start;
+        }
+
+        .widget-message.user {
+            justify-content: flex-end;
+        }
+
+        .widget-message-content {
+            max-width: 80%;
+            padding: 10px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+
+        .widget-message.bot .widget-message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .widget-message.user .widget-message-content {
+            background: #007bff;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .widget-quick-replies {
+            padding: 10px 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .widget-quick-reply {
+            display: inline-block;
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            border-radius: 15px;
+            padding: 6px 12px;
+            margin: 3px 3px 3px 0;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .widget-quick-reply:hover {
+            background: #e8f0fe;
+            border-color: #4285f4;
+            color: #1a73e8;
+        }
+
+        .widget-typing {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 15px;
+            border-bottom-left-radius: 4px;
+            max-width: 50px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .widget-typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .widget-typing-dots span {
+            width: 4px;
+            height: 4px;
+            background: #999;
+            border-radius: 50%;
+            animation: widgetTyping 1.5s infinite;
+        }
+
+        .widget-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .widget-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes widgetTyping {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            #visa-chatbot-container {
+                width: 300px;
+                height: 450px;
+            }
+            #visa-chatbot-widget {
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="visa-chatbot-widget">
+        <button id="visa-chatbot-button">
+            🇨🇦
+            <div class="notification-badge">!</div>
+        </button>
+        
+        <div id="visa-chatbot-container">
+            <div class="widget-header">
+                <h3>🇨🇦 Assistant Visa Canada</h3>
+                <button class="widget-close" id="widget-close">×</button>
+            </div>
+            
+            <div class="widget-messages" id="widget-messages">
+                <div class="widget-message bot">
+                    <div class="widget-message-content">
+                        Bonjour ! 👋 Je suis votre assistant pour Visa Canada Cadeau. Comment puis-je vous aider avec votre projet d'immigration au Canada ?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="widget-quick-replies" id="widget-quick-replies">
+                <div class="widget-quick-reply" onclick="sendWidgetReply('Pack étudiant')">Pack étudiant</div>
+                <div class="widget-quick-reply" onclick="sendWidgetReply('Assistance')">Assistance</div>
+                <div class="widget-quick-reply" onclick="sendWidgetReply('Quel guide me convient ?')">Quel guide ?</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const widget = document.getElementById('visa-chatbot-widget');
+            const button = document.getElementById('visa-chatbot-button');
+            const container = document.getElementById('visa-chatbot-container');
+            const closeBtn = document.getElementById('widget-close');
+            const messages = document.getElementById('widget-messages');
+            const quickReplies = document.getElementById('widget-quick-replies');
+            const badge = document.querySelector('.notification-badge');
+
+            let isOpen = false;
+
+            const widgetResponses = {
+                'pack étudiant': {
+                    text: "📚 Le pack étudiant est-il pour le Québec et le reste du Canada ?\n\nOui ! Peu importe où vous voulez étudier au Canada, notre pack complet études le permet. Il couvre toutes les provinces canadiennes, y compris le Québec. 🇨🇦\n\n👉 Consultez visacanadacadeau.com",
+                    replies: ['Autres guides', 'Prix des guides', 'Questions fréquentes']
+                },
+                'assistance': {
+                    text: "🆘 Faites-vous de l'assistance ?\n\nNous sommes en train de réfléchir à une assistance automatique selon vos besoins. Inscrivez-vous à notre newsletter pour ne pas manquer le lancement de ce service ! 📬",
+                    replies: ['Autres questions', 'Guides disponibles', 'Contact']
+                },
+                'quel guide me convient': {
+                    text: "🎯 Pour vous recommander le bon guide, dites-moi votre objectif :\n\n• Vous voulez étudier au Canada ? 🎓\n• Vous cherchez un emploi ? 💼\n• Vous voulez immigrer en famille ? 👨‍👩‍👧\n• Vous visez la résidence permanente ? 🏠",
+                    replies: ['Études', 'Emploi', 'Famille', 'Résidence permanente']
+                },
+                'études': {
+                    text: "🎓 Parfait ! Notre Pack Étudiant contient :\n\n• Guide complet visa étudiant\n• Vidéos explicatives détaillées\n• Astuces pour obtenir des bourses\n• Procédures pour toutes les provinces\n• Pièges à éviter absolument\n\nValable pour le Québec ET le reste du Canada !",
+                    replies: ['Voir sur le site', 'Autres guides', 'Prix']
+                },
+                'emploi': {
+                    text: "💼 Pour travailler au Canada, nous avons :\n\n• Guide PVT (Programme Vacances Travail)\n• Guide Permis de Travail\n• Guide Entrée Express\n• Guide Travailleurs qualifiés\n\nChaque guide évite les erreurs coûteuses des agences !",
+                    replies: ['Guide PVT', 'Permis travail', 'Entrée Express']
+                },
+                'famille': {
+                    text: "👨‍👩‍👧 Immigration en famille :\n\n• Guide Parrainage conjoint/époux\n• Guide CSQ Québec\n• Guide réunification familiale\n• Procédures pour enfants\n\nTous nos guides incluent les démarches familiales.",
+                    replies: ['Parrainage', 'CSQ Québec', 'Voir les guides']
+                },
+                'résidence permanente': {
+                    text: "🏠 Résidence permanente :\n\n• Guide Entrée Express (voie rapide)\n• Guide PCP (Candidats des Provinces)\n• Guide Expérience canadienne\n• Guide Travailleurs qualifiés Québec\n\nChoisissez selon votre profil !",
+                    replies: ['Entrée Express', 'PCP', 'Expérience canadienne']
+                },
+                'prix': {
+                    text: "💰 Nos guides sont très abordables !\n\nAu lieu de payer des milliers d'euros aux agences, nos guides vous coûtent une fraction du prix. Économisez facilement 3000-5000€ !\n\n👉 Consultez les prix sur visacanadacadeau.com",
+                    replies: ['Voir la boutique', 'Garanties', 'Témoignages']
+                },
+                'default': {
+                    text: "Je peux vous aider avec :\n\n• Choisir le bon guide selon votre situation\n• Questions sur nos produits\n• Informations sur l'assistance à venir\n• Économiser des milliers d'euros vs agences\n\nQue souhaitez-vous savoir ?",
+                    replies: ['Pack étudiant', 'Assistance', 'Quel guide me convient ?']
+                }
+            };
+
+            button.addEventListener('click', function() {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    container.classList.add('show');
+                    button.classList.add('active');
+                    button.innerHTML = '×';
+                    badge.style.display = 'none';
+                } else {
+                    container.classList.remove('show');
+                    button.classList.remove('active');
+                    button.innerHTML = '🇨🇦';
+                }
+            });
+
+            closeBtn.addEventListener('click', function() {
+                container.classList.remove('show');
+                button.classList.remove('active');
+                button.innerHTML = '🇨🇦';
+                isOpen = false;
+            });
+
+            window.sendWidgetReply = function(message) {
+                addWidgetMessage(message, 'user');
+                
+                setTimeout(() => {
+                    showWidgetTyping();
+                    setTimeout(() => {
+                        hideWidgetTyping();
+                        handleWidgetResponse(message);
+                    }, 1200);
+                }, 300);
+            };
+
+            function addWidgetMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `widget-message ${sender}`;
+                messageDiv.innerHTML = `<div class="widget-message-content">${text}</div>`;
+                messages.appendChild(messageDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function showWidgetTyping() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'widget-message bot';
+                typingDiv.id = 'widget-typing';
+                typingDiv.innerHTML = `
+                    <div class="widget-typing">
+                        <div class="widget-typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                `;
+                messages.appendChild(typingDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function hideWidgetTyping() {
+                const typing = document.getElementById('widget-typing');
+                if (typing) {
+                    typing.remove();
+                }
+            }
+
+            function handleWidgetResponse(userMessage) {
+                const message = userMessage.toLowerCase();
+                let response;
+
+                if (message.includes('pack étudiant') || message.includes('étudiant')) {
+                    response = widgetResponses['pack étudiant'];
+                } else if (message.includes('assistance')) {
+                    response = widgetResponses['assistance'];
+                } else if (message.includes('guide') && message.includes('convient')) {
+                    response = widgetResponses['quel guide me convient'];
+                } else if (message.includes('études') || message.includes('étudier')) {
+                    response = widgetResponses['études'];
+                } else if (message.includes('emploi') || message.includes('travail')) {
+                    response = widgetResponses['emploi'];
+                } else if (message.includes('famille')) {
+                    response = widgetResponses['famille'];
+                } else if (message.includes('résidence') || message.includes('permanente')) {
+                    response = widgetResponses['résidence permanente'];
+                } else if (message.includes('prix') || message.includes('coût')) {
+                    response = widgetResponses['prix'];
+                } else {
+                    response = widgetResponses['default'];
+                }
+
+                addWidgetMessage(response.text, 'bot');
+                updateWidgetReplies(response.replies);
+            }
+
+            function updateWidgetReplies(replies) {
+                quickReplies.innerHTML = '';
+                replies.forEach(reply => {
+                    const btn = document.createElement('div');
+                    btn.className = 'widget-quick-reply';
+                    btn.textContent = reply;
+                    btn.onclick = () => sendWidgetReply(reply);
+                    quickReplies.appendChild(btn);
+                });
+            }
+
+            setTimeout(() => {
+                if (!isOpen && badge) {
+                    badge.style.display = 'flex';
+                }
+            }, 5000);
+        })();
+    </script>
+</body>
+</html>
